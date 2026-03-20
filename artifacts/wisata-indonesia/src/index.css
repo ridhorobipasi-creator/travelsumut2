@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -55,49 +55,82 @@
 }
 
 :root {
-  /* Warm tropical sand background */
-  --background: 40 33% 98%;
-  --foreground: 160 20% 15%;
+  /* Modern Minimalist Light Mode */
+  --background: 0 0% 100%;
+  --foreground: 221 39% 11%;
   
-  /* Deep Tropical Green */
-  --primary: 158 64% 30%;
+  /* Deep Forest Green */
+  --primary: 158 62% 24%;
   --primary-foreground: 0 0% 100%;
   
-  /* Sunset Orange */
-  --secondary: 35 92% 55%;
+  /* Warm Amber/Gold */
+  --secondary: 32 90% 45%;
   --secondary-foreground: 0 0% 100%;
   
   --card: 0 0% 100%;
-  --card-foreground: 160 20% 15%;
-  --card-border: 40 20% 92%;
+  --card-foreground: 221 39% 11%;
+  --card-border: 220 13% 91%;
   
-  --border: 40 20% 90%;
-  --input: 40 20% 90%;
-  --ring: 158 64% 30%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 158 62% 24%;
   
   --popover: 0 0% 100%;
-  --popover-foreground: 160 20% 15%;
-  --popover-border: 40 20% 92%;
+  --popover-foreground: 221 39% 11%;
+  --popover-border: 220 13% 91%;
   
-  --muted: 40 20% 92%;
-  --muted-foreground: 160 10% 45%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
   
-  --accent: 35 92% 55%;
+  --accent: 32 90% 45%;
   --accent-foreground: 0 0% 100%;
   
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
 
   /* Admin Sidebar */
-  --sidebar: 160 20% 12%;
+  --sidebar: 158 62% 14%;
   --sidebar-foreground: 0 0% 100%;
-  --sidebar-border: 160 20% 18%;
-  --sidebar-primary: 158 64% 30%;
+  --sidebar-border: 158 62% 18%;
+  --sidebar-primary: 158 62% 24%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 160 20% 20%;
+  --sidebar-accent: 158 62% 20%;
   --sidebar-accent-foreground: 0 0% 100%;
 
   --radius: 0.75rem;
+}
+
+.dark {
+  /* Dark Green-Gray Background */
+  --background: 158 20% 10%;
+  --foreground: 0 0% 98%;
+  
+  --primary: 158 62% 40%;
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 32 90% 55%;
+  --secondary-foreground: 0 0% 100%;
+  
+  --card: 158 20% 14%;
+  --card-foreground: 0 0% 98%;
+  --card-border: 158 20% 20%;
+  
+  --border: 158 20% 20%;
+  --input: 158 20% 20%;
+  --ring: 158 62% 40%;
+  
+  --popover: 158 20% 14%;
+  --popover-foreground: 0 0% 98%;
+  --popover-border: 158 20% 20%;
+  
+  --muted: 158 20% 16%;
+  --muted-foreground: 158 10% 65%;
+  
+  --accent: 32 90% 55%;
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
 }
 
 @layer base {
@@ -113,25 +146,34 @@
   }
 }
 
+/* Custom shadow utilities */
+@utility shadow-soft {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 0 3px rgba(0, 0, 0, 0.02);
+}
+
+@utility shadow-soft-lg {
+  box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.08), 0 0 5px rgba(0, 0, 0, 0.03);
+}
+
 /* Glassmorphism utilities */
 .glass {
-  @apply bg-white/70 backdrop-blur-lg border border-white/50 shadow-xl shadow-black/5;
+  @apply bg-white/80 backdrop-blur-xl border border-white/50 shadow-soft;
 }
 
 .glass-dark {
-  @apply bg-black/40 backdrop-blur-md border border-white/10 shadow-xl;
+  @apply bg-black/40 backdrop-blur-md border border-white/10 shadow-soft-lg;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(var(--background));
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
+  background: hsl(var(--border));
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
