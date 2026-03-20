@@ -1,0 +1,276 @@
+Objective:
+Bangun sebuah platform website wisata Indonesia yang scalable, modular, dan modern, dengan fitur lengkap untuk pengguna dan admin. Sistem harus fleksibel dalam pengaturan wilayah, kategori, dan konten.
+
+1. Tech Stack (Wajib Digunakan)
+
+Backend: Laravel (API-first, REST/GraphQL opsional)
+
+Frontend:
+
+Next.js (SSR untuk SEO halaman publik)
+
+React.js (dashboard admin SPA)
+
+Database: MySQL / PostgreSQL
+
+State Management: Redux / Zustand
+
+Styling: Tailwind CSS / ShadCN UI
+
+Auth: JWT / Laravel Sanctum
+
+Deployment-ready (Docker optional)
+
+2. Konsep Utama Sistem
+
+Platform wisata berbasis wilayah Indonesia (Provinsi → Kota → Destinasi)
+
+Semua konten dapat dikelola dari admin (dynamic, bukan hardcoded)
+
+User bisa:
+
+Booking paket wisata
+
+Rental mobil
+
+Custom trip request
+
+Admin bisa mengatur:
+
+Harga
+
+Jadwal
+
+Kategori wilayah
+
+Konten website
+
+3. Struktur Frontend (Public Website)
+Navbar:
+
+Beranda
+
+Paket Wisata
+
+Rental Mobil
+
+Galeri
+
+Blog
+
+Halaman Utama:
+
+Beranda
+
+Hero section (banner dinamis)
+
+Pencarian wisata (filter wilayah)
+
+Highlight paket populer
+
+Testimoni
+
+CTA booking
+
+Paket Wisata
+
+Filter:
+
+Wilayah (Provinsi/Kota)
+
+Harga
+
+Durasi
+
+List + detail paket
+
+Rental Mobil
+
+List armada
+
+Filter tipe kendaraan
+
+Booking langsung
+
+Galeri
+
+Grid foto (lazy load)
+
+Kategori album
+
+Blog
+
+Artikel SEO-friendly (SSR Next.js)
+
+Kategori & tag
+
+4. Sistem Wilayah (Core Feature)
+
+Struktur:
+
+Provinsi
+
+Kota
+
+Destinasi
+
+Admin bisa:
+
+Tambah/edit/hapus wilayah
+
+Assign ke:
+
+Paket wisata
+
+Rental
+
+Artikel
+
+5. Fitur Admin Dashboard (React SPA)
+A. Dasbor
+
+Statistik:
+
+Total order
+
+Revenue
+
+Booking aktif
+
+B. Order & Report
+
+Semua Pesanan
+
+Custom Trip Requests
+
+Laporan Pesanan
+
+Export (PDF/Excel)
+
+C. Pengaturan Global
+
+Bahasa (multi-language)
+
+Mata uang (multi-currency)
+
+Profil bisnis
+
+Log aktivitas
+
+D. Pesanan & Jadwal
+
+Jadwal Trip
+
+Jadwal Rental
+
+Jadwal Paket Rental
+
+E. Katalog Produk
+
+Category
+
+Partner
+
+Hotel
+
+Paket Wisata
+
+Paket Rental
+
+Aset & Armada
+
+F. Rental Mobil
+
+Data kendaraan
+
+Status (available/booked)
+
+Harga dinamis
+
+G. Konten Website
+
+Artikel / Blog
+
+Galeri Foto
+
+Instagram Feeds (API)
+
+Banner Promosi
+
+Halaman Statis
+
+H. Interaksi User
+
+Pesan Kontak
+
+Ulasan / Review (moderasi admin)
+
+I. Manajemen Admin
+
+Manajemen Pengguna (role-based: admin, staff)
+
+Hak akses (RBAC)
+
+J. Sistem & Pengaturan
+
+Data Trip
+
+Pengaturan umum sistem
+
+6. UI/UX Guidelines
+
+Desain: modern, minimalis, clean
+
+Dominan:
+
+White space
+
+Soft shadow
+
+Rounded components
+
+UX fokus:
+
+Fast loading
+
+Mobile-first
+
+Simple booking flow (≤ 3 step)
+
+7. Fitur Tambahan (Advanced)
+
+SEO Optimization (Next.js SSR)
+
+Dynamic Pricing (berdasarkan musim/tanggal)
+
+Wishlist user
+
+Payment Gateway integration
+
+Notification:
+
+Email
+
+WhatsApp (optional API)
+
+Analytics dashboard
+
+8. Arsitektur Sistem
+
+Laravel → API Layer
+
+Next.js → Public Web (SEO)
+
+React → Admin Dashboard
+
+API terpisah (clean architecture)
+
+9. Output yang Diharapkan
+
+Clean code (modular, scalable)
+
+Reusable components
+
+REST API documentation
+
+Database schema jelas (ERD)

@@ -1,22 +1,44 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Wisata Indonesia API - Tourism Platform
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: provinces
+    description: Province operations
+  - name: cities
+    description: City operations
+  - name: destinations
+    description: Destination operations
+  - name: packages
+    description: Tour package operations
+  - name: vehicles
+    description: Rental vehicle operations
+  - name: bookings
+    description: Booking operations
+  - name: gallery
+    description: Gallery operations
+  - name: blog
+    description: Blog operations
+  - name: testimonials
+    description: Testimonial operations
+  - name: banners
+    description: Banner operations
+  - name: orders
+    description: Order operations
+  - name: admin
+    description: Admin operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +46,928 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /provinces:
+    get:
+      operationId: getProvinces
+      tags: [provinces]
+      summary: List all provinces
+      responses:
+        "200":
+          description: List of provinces
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Province"
+    post:
+      operationId: createProvince
+      tags: [provinces]
+      summary: Create a province
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProvinceInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Province"
+
+  /provinces/{id}:
+    get:
+      operationId: getProvince
+      tags: [provinces]
+      summary: Get a province
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Province
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Province"
+    put:
+      operationId: updateProvince
+      tags: [provinces]
+      summary: Update a province
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProvinceInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Province"
+    delete:
+      operationId: deleteProvince
+      tags: [provinces]
+      summary: Delete a province
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /cities:
+    get:
+      operationId: getCities
+      tags: [cities]
+      summary: List all cities
+      parameters:
+        - name: provinceId
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of cities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/City"
+    post:
+      operationId: createCity
+      tags: [cities]
+      summary: Create a city
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCityInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/City"
+
+  /cities/{id}:
+    put:
+      operationId: updateCity
+      tags: [cities]
+      summary: Update a city
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCityInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/City"
+    delete:
+      operationId: deleteCity
+      tags: [cities]
+      summary: Delete a city
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /destinations:
+    get:
+      operationId: getDestinations
+      tags: [destinations]
+      summary: List all destinations
+      parameters:
+        - name: cityId
+          in: query
+          schema:
+            type: integer
+        - name: provinceId
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of destinations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Destination"
+    post:
+      operationId: createDestination
+      tags: [destinations]
+      summary: Create a destination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDestinationInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Destination"
+
+  /destinations/{id}:
+    get:
+      operationId: getDestination
+      tags: [destinations]
+      summary: Get a destination
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Destination
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Destination"
+    put:
+      operationId: updateDestination
+      tags: [destinations]
+      summary: Update a destination
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDestinationInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Destination"
+    delete:
+      operationId: deleteDestination
+      tags: [destinations]
+      summary: Delete a destination
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /packages:
+    get:
+      operationId: getPackages
+      tags: [packages]
+      summary: List tour packages
+      parameters:
+        - name: provinceId
+          in: query
+          schema:
+            type: integer
+        - name: cityId
+          in: query
+          schema:
+            type: integer
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+        - name: duration
+          in: query
+          schema:
+            type: integer
+        - name: featured
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of packages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TourPackage"
+    post:
+      operationId: createPackage
+      tags: [packages]
+      summary: Create a tour package
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePackageInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TourPackage"
+
+  /packages/{id}:
+    get:
+      operationId: getPackage
+      tags: [packages]
+      summary: Get a tour package
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tour package
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TourPackage"
+    put:
+      operationId: updatePackage
+      tags: [packages]
+      summary: Update a tour package
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePackageInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TourPackage"
+    delete:
+      operationId: deletePackage
+      tags: [packages]
+      summary: Delete a tour package
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /vehicles:
+    get:
+      operationId: getVehicles
+      tags: [vehicles]
+      summary: List rental vehicles
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: available
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of vehicles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Vehicle"
+    post:
+      operationId: createVehicle
+      tags: [vehicles]
+      summary: Create a vehicle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVehicleInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vehicle"
+
+  /vehicles/{id}:
+    get:
+      operationId: getVehicle
+      tags: [vehicles]
+      summary: Get a vehicle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Vehicle
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vehicle"
+    put:
+      operationId: updateVehicle
+      tags: [vehicles]
+      summary: Update a vehicle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVehicleInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vehicle"
+    delete:
+      operationId: deleteVehicle
+      tags: [vehicles]
+      summary: Delete a vehicle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /bookings:
+    get:
+      operationId: getBookings
+      tags: [bookings]
+      summary: List all bookings
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: type
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of bookings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Booking"
+    post:
+      operationId: createBooking
+      tags: [bookings]
+      summary: Create a booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBookingInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+
+  /bookings/{id}:
+    get:
+      operationId: getBooking
+      tags: [bookings]
+      summary: Get a booking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Booking
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+    put:
+      operationId: updateBooking
+      tags: [bookings]
+      summary: Update a booking status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBookingInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+
+  /gallery:
+    get:
+      operationId: getGallery
+      tags: [gallery]
+      summary: List gallery items
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of gallery items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GalleryItem"
+    post:
+      operationId: createGalleryItem
+      tags: [gallery]
+      summary: Create a gallery item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGalleryItemInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryItem"
+
+  /gallery/{id}:
+    delete:
+      operationId: deleteGalleryItem
+      tags: [gallery]
+      summary: Delete a gallery item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /blog:
+    get:
+      operationId: getBlogPosts
+      tags: [blog]
+      summary: List blog posts
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: tag
+          in: query
+          schema:
+            type: string
+        - name: published
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of blog posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+    post:
+      operationId: createBlogPost
+      tags: [blog]
+      summary: Create a blog post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBlogPostInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+
+  /blog/{id}:
+    get:
+      operationId: getBlogPost
+      tags: [blog]
+      summary: Get a blog post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Blog post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+    put:
+      operationId: updateBlogPost
+      tags: [blog]
+      summary: Update a blog post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBlogPostInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+    delete:
+      operationId: deleteBlogPost
+      tags: [blog]
+      summary: Delete a blog post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /testimonials:
+    get:
+      operationId: getTestimonials
+      tags: [testimonials]
+      summary: List testimonials
+      parameters:
+        - name: approved
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of testimonials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Testimonial"
+    post:
+      operationId: createTestimonial
+      tags: [testimonials]
+      summary: Create a testimonial
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTestimonialInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testimonial"
+
+  /testimonials/{id}:
+    put:
+      operationId: updateTestimonial
+      tags: [testimonials]
+      summary: Update/approve a testimonial
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTestimonialInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testimonial"
+    delete:
+      operationId: deleteTestimonial
+      tags: [testimonials]
+      summary: Delete a testimonial
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /banners:
+    get:
+      operationId: getBanners
+      tags: [banners]
+      summary: List banners
+      parameters:
+        - name: active
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of banners
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Banner"
+    post:
+      operationId: createBanner
+      tags: [banners]
+      summary: Create a banner
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBannerInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Banner"
+
+  /banners/{id}:
+    put:
+      operationId: updateBanner
+      tags: [banners]
+      summary: Update a banner
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBannerInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Banner"
+    delete:
+      operationId: deleteBanner
+      tags: [banners]
+      summary: Delete a banner
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /admin/stats:
+    get:
+      operationId: getAdminStats
+      tags: [admin]
+      summary: Get admin dashboard statistics
+      responses:
+        "200":
+          description: Statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminStats"
+
+  /admin/custom-trips:
+    get:
+      operationId: getCustomTrips
+      tags: [admin]
+      summary: List custom trip requests
+      responses:
+        "200":
+          description: List of custom trip requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CustomTrip"
+    post:
+      operationId: createCustomTrip
+      tags: [admin]
+      summary: Submit a custom trip request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCustomTripInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomTrip"
+
+  /admin/custom-trips/{id}:
+    put:
+      operationId: updateCustomTrip
+      tags: [admin]
+      summary: Update custom trip status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCustomTripInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomTrip"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +978,800 @@ components:
       required:
         - status
 
+    Province:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - slug
+        - createdAt
+
+    CreateProvinceInput:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+      required:
+        - name
+        - slug
+
+    City:
+      type: object
+      properties:
+        id:
+          type: integer
+        provinceId:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        province:
+          $ref: "#/components/schemas/Province"
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - provinceId
+        - name
+        - slug
+        - createdAt
+
+    CreateCityInput:
+      type: object
+      properties:
+        provinceId:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+      required:
+        - provinceId
+        - name
+        - slug
+
+    Destination:
+      type: object
+      properties:
+        id:
+          type: integer
+        cityId:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        rating:
+          type: number
+          nullable: true
+        city:
+          $ref: "#/components/schemas/City"
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - cityId
+        - name
+        - slug
+        - createdAt
+
+    CreateDestinationInput:
+      type: object
+      properties:
+        cityId:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        rating:
+          type: number
+          nullable: true
+      required:
+        - cityId
+        - name
+        - slug
+
+    TourPackage:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        price:
+          type: number
+        duration:
+          type: integer
+        maxParticipants:
+          type: integer
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        images:
+          type: array
+          items:
+            type: string
+        includes:
+          type: array
+          items:
+            type: string
+        excludes:
+          type: array
+          items:
+            type: string
+        itinerary:
+          type: string
+          nullable: true
+        provinceId:
+          type: integer
+          nullable: true
+        cityId:
+          type: integer
+          nullable: true
+        isFeatured:
+          type: boolean
+        isActive:
+          type: boolean
+        rating:
+          type: number
+          nullable: true
+        totalReviews:
+          type: integer
+        province:
+          $ref: "#/components/schemas/Province"
+          nullable: true
+        city:
+          $ref: "#/components/schemas/City"
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - title
+        - slug
+        - price
+        - duration
+        - images
+        - includes
+        - excludes
+        - isFeatured
+        - isActive
+        - totalReviews
+        - createdAt
+
+    CreatePackageInput:
+      type: object
+      properties:
+        title:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        price:
+          type: number
+        duration:
+          type: integer
+        maxParticipants:
+          type: integer
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        images:
+          type: array
+          items:
+            type: string
+        includes:
+          type: array
+          items:
+            type: string
+        excludes:
+          type: array
+          items:
+            type: string
+        itinerary:
+          type: string
+          nullable: true
+        provinceId:
+          type: integer
+          nullable: true
+        cityId:
+          type: integer
+          nullable: true
+        isFeatured:
+          type: boolean
+        isActive:
+          type: boolean
+      required:
+        - title
+        - slug
+        - price
+        - duration
+        - isFeatured
+        - isActive
+
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        brand:
+          type: string
+          nullable: true
+        capacity:
+          type: integer
+        pricePerDay:
+          type: number
+        imageUrl:
+          type: string
+          nullable: true
+        images:
+          type: array
+          items:
+            type: string
+        features:
+          type: array
+          items:
+            type: string
+        isAvailable:
+          type: boolean
+        description:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - type
+        - capacity
+        - pricePerDay
+        - images
+        - features
+        - isAvailable
+        - createdAt
+
+    CreateVehicleInput:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        brand:
+          type: string
+          nullable: true
+        capacity:
+          type: integer
+        pricePerDay:
+          type: number
+        imageUrl:
+          type: string
+          nullable: true
+        images:
+          type: array
+          items:
+            type: string
+        features:
+          type: array
+          items:
+            type: string
+        isAvailable:
+          type: boolean
+        description:
+          type: string
+          nullable: true
+      required:
+        - name
+        - type
+        - capacity
+        - pricePerDay
+        - isAvailable
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        status:
+          type: string
+        customerName:
+          type: string
+        customerEmail:
+          type: string
+        customerPhone:
+          type: string
+          nullable: true
+        packageId:
+          type: integer
+          nullable: true
+        vehicleId:
+          type: integer
+          nullable: true
+        startDate:
+          type: string
+        endDate:
+          type: string
+          nullable: true
+        participants:
+          type: integer
+          nullable: true
+        totalPrice:
+          type: number
+        notes:
+          type: string
+          nullable: true
+        package:
+          $ref: "#/components/schemas/TourPackage"
+          nullable: true
+        vehicle:
+          $ref: "#/components/schemas/Vehicle"
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - type
+        - status
+        - customerName
+        - customerEmail
+        - startDate
+        - totalPrice
+        - createdAt
+
+    CreateBookingInput:
+      type: object
+      properties:
+        type:
+          type: string
+        customerName:
+          type: string
+        customerEmail:
+          type: string
+        customerPhone:
+          type: string
+          nullable: true
+        packageId:
+          type: integer
+          nullable: true
+        vehicleId:
+          type: integer
+          nullable: true
+        startDate:
+          type: string
+        endDate:
+          type: string
+          nullable: true
+        participants:
+          type: integer
+          nullable: true
+        totalPrice:
+          type: number
+        notes:
+          type: string
+          nullable: true
+      required:
+        - type
+        - customerName
+        - customerEmail
+        - startDate
+        - totalPrice
+
+    UpdateBookingInput:
+      type: object
+      properties:
+        status:
+          type: string
+        notes:
+          type: string
+          nullable: true
+      required:
+        - status
+
+    GalleryItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        imageUrl:
+          type: string
+        category:
+          type: string
+          nullable: true
+        destinationId:
+          type: integer
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - title
+        - imageUrl
+        - createdAt
+
+    CreateGalleryItemInput:
+      type: object
+      properties:
+        title:
+          type: string
+        imageUrl:
+          type: string
+        category:
+          type: string
+          nullable: true
+        destinationId:
+          type: integer
+          nullable: true
+      required:
+        - title
+        - imageUrl
+
+    BlogPost:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+          nullable: true
+        content:
+          type: string
+        imageUrl:
+          type: string
+          nullable: true
+        category:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        authorName:
+          type: string
+        isPublished:
+          type: boolean
+        publishedAt:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - title
+        - slug
+        - content
+        - authorName
+        - tags
+        - isPublished
+        - createdAt
+
+    CreateBlogPostInput:
+      type: object
+      properties:
+        title:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+          nullable: true
+        content:
+          type: string
+        imageUrl:
+          type: string
+          nullable: true
+        category:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        authorName:
+          type: string
+        isPublished:
+          type: boolean
+      required:
+        - title
+        - slug
+        - content
+        - authorName
+        - isPublished
+
+    Testimonial:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerName:
+          type: string
+        customerAvatar:
+          type: string
+          nullable: true
+        rating:
+          type: integer
+        comment:
+          type: string
+        packageId:
+          type: integer
+          nullable: true
+        isApproved:
+          type: boolean
+        createdAt:
+          type: string
+      required:
+        - id
+        - customerName
+        - rating
+        - comment
+        - isApproved
+        - createdAt
+
+    CreateTestimonialInput:
+      type: object
+      properties:
+        customerName:
+          type: string
+        customerAvatar:
+          type: string
+          nullable: true
+        rating:
+          type: integer
+        comment:
+          type: string
+        packageId:
+          type: integer
+          nullable: true
+      required:
+        - customerName
+        - rating
+        - comment
+
+    UpdateTestimonialInput:
+      type: object
+      properties:
+        isApproved:
+          type: boolean
+        comment:
+          type: string
+          nullable: true
+      required:
+        - isApproved
+
+    Banner:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        subtitle:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+        ctaText:
+          type: string
+          nullable: true
+        ctaLink:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        order:
+          type: integer
+        createdAt:
+          type: string
+      required:
+        - id
+        - title
+        - imageUrl
+        - isActive
+        - order
+        - createdAt
+
+    CreateBannerInput:
+      type: object
+      properties:
+        title:
+          type: string
+        subtitle:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+        ctaText:
+          type: string
+          nullable: true
+        ctaLink:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        order:
+          type: integer
+      required:
+        - title
+        - imageUrl
+        - isActive
+        - order
+
+    AdminStats:
+      type: object
+      properties:
+        totalBookings:
+          type: integer
+        activeBookings:
+          type: integer
+        totalRevenue:
+          type: number
+        totalPackages:
+          type: integer
+        totalVehicles:
+          type: integer
+        totalCustomTrips:
+          type: integer
+        recentBookings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Booking"
+      required:
+        - totalBookings
+        - activeBookings
+        - totalRevenue
+        - totalPackages
+        - totalVehicles
+        - totalCustomTrips
+        - recentBookings
+
+    CustomTrip:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerName:
+          type: string
+        customerEmail:
+          type: string
+        customerPhone:
+          type: string
+          nullable: true
+        destination:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+          nullable: true
+        participants:
+          type: integer
+        budget:
+          type: number
+          nullable: true
+        requirements:
+          type: string
+          nullable: true
+        status:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - customerName
+        - customerEmail
+        - destination
+        - startDate
+        - participants
+        - status
+        - createdAt
+
+    CreateCustomTripInput:
+      type: object
+      properties:
+        customerName:
+          type: string
+        customerEmail:
+          type: string
+        customerPhone:
+          type: string
+          nullable: true
+        destination:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+          nullable: true
+        participants:
+          type: integer
+        budget:
+          type: number
+          nullable: true
+        requirements:
+          type: string
+          nullable: true
+      required:
+        - customerName
+        - customerEmail
+        - destination
+        - startDate
+        - participants
+
+    UpdateCustomTripInput:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
