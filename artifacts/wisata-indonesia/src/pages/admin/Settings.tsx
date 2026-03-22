@@ -1,7 +1,8 @@
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { useState } from "react";
-import { Settings as SettingsIcon, Save, Globe, Phone, HardDrive, Database, KeyRound, MapPin, Mail, Image, Upload, Link2, ExternalLink } from "lucide-react";
+import { Settings as SettingsIcon, Save, Globe, Phone, HardDrive, Database, KeyRound, MapPin, Mail, Image, Link2, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useImageSettings } from "@/hooks/use-image-settings";
 
 const IMAGE_FIELDS = [
   {
@@ -58,7 +59,7 @@ const initialImages: Record<string, string> = {
 export default function Settings() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("general");
-  const [imageData, setImageData] = useState<Record<string, string>>(initialImages);
+  const { settings: imageData, updateSettings } = useImageSettings();
   const [previewKey, setPreviewKey] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -85,14 +86,11 @@ export default function Settings() {
   };
 
   const handleImageChange = (key: string, value: string) => {
-    setImageData(prev => ({ ...prev, [key]: value }));
+    updateSettings({ ...imageData, [key]: value });
   };
 
   const handleSave = () => {
-    // Simpan ke localStorage sebagai demo
-    try {
-      localStorage.setItem("wisata_image_settings", JSON.stringify(imageData));
-    } catch {}
+    updateSettings(imageData);
     toast({
       title: "Pengaturan Disimpan",
       description: "Semua perubahan pengaturan berhasil disimpan.",

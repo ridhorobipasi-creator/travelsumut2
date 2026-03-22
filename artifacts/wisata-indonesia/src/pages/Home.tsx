@@ -8,20 +8,22 @@ import { MOCK_PACKAGES, MOCK_TESTIMONIALS } from "@/lib/mockData";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SEO } from "@/components/ui/SEO";
+import { useImageSettings } from "@/hooks/use-image-settings";
 
 const REGIONS = [
-  { name: "Danau Toba", image: "https://images.unsplash.com/photo-1599408913599-71e0ea9283fa?w=600" },
-  { name: "Berastagi", image: "https://images.unsplash.com/photo-1601152264065-0cbf24fc4820?w=600" },
-  { name: "Nias", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600" },
-  { name: "Bukit Lawang", image: "https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=600" },
-  { name: "Samosir", image: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600" },
-  { name: "Medan", image: "https://images.unsplash.com/photo-1591301490041-d527bc63b07c?w=600" }
+  { name: "Danau Toba", imageKey: "region1Image" },
+  { name: "Berastagi", imageKey: "region2Image" },
+  { name: "Nias", imageKey: "region3Image" },
+  { name: "Bukit Lawang", imageKey: "region4Image" },
+  { name: "Samosir", imageKey: "region5Image" },
+  { name: "Medan", imageKey: "region6Image" },
 ];
 
 export default function Home() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
+  const { get: getImg } = useImageSettings();
   const { data: featuredPackages } = useGetPackages({ featured: true });
   const { data: testimonials } = useGetTestimonials({ approved: true });
 
@@ -47,8 +49,8 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center justify-center pt-20 -mt-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1599408913599-71e0ea9283fa?auto=format&fit=crop&q=80&w=2000" 
-            alt="Danau Toba" 
+            src={getImg("heroImage")} 
+            alt={getImg("heroBannerAlt") || "Danau Toba"} 
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40" />
@@ -122,7 +124,7 @@ export default function Home() {
                   className="relative h-80 rounded-2xl overflow-hidden group cursor-pointer"
                 >
                   <img 
-                    src={region.image} 
+                    src={getImg(region.imageKey)} 
                     alt={region.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
