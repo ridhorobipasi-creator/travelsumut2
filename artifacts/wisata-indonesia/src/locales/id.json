@@ -1,0 +1,225 @@
+{
+  "errorBoundary": {
+    "title": "Waduh! Terjadi Kesalahan",
+    "desc": "Aplikasi mengalami kendala teknis. Silakan coba muat ulang halaman.",
+    "reload": "Muat Ulang Halaman"
+  },
+  "footer": {
+    "desc": "Platform pariwisata terpercaya untuk menjelajahi pesona alam dan keunikan budaya Sumatera Utara. Jadikan perjalanan Anda tak terlupakan bersama kami.",
+    "quickLinks": {
+      "title": "Tautan Cepat",
+      "packages": "Paket Wisata",
+      "vehicles": "Rental Mobil",
+      "gallery": "Galeri Destinasi",
+      "blog": "Blog & Artikel",
+      "customTrip": "Custom Trip"
+    },
+    "popularDest": {
+      "title": "Destinasi Populer",
+      "list": ["Danau Toba", "Berastagi", "Bukit Lawang", "Pulau Nias", "Samosir"]
+    }
+  },
+  "notFound": {
+    "title": "404 Halaman Tidak Ditemukan",
+    "desc": "Sepertinya halaman yang Anda cari tidak tersedia atau belum ditambahkan ke router."
+  },
+  "customTrip": {
+    "seo": {
+      "title": "Custom Trip",
+      "description": "Rancang liburan impian Anda sendiri di Sumatera Utara. Kami siapkan itinerary khusus sesuai keinginan Anda.",
+      "keywords": "custom trip sumut, paket wisata custom, liburan fleksibel"
+    },
+    "toast": {
+      "title": "Berhasil!",
+      "desc": "Permintaan custom trip Anda telah kami terima. Tim kami akan segera menghubungi Anda."
+    },
+    "hero": {
+      "badge": "Rancang Liburan Anda",
+      "title": "Liburan Impian,\nSesuai Keinginan Anda.",
+      "desc": "Punya destinasi impian tapi tidak menemukan paket yang pas? Beritahu kami rencana perjalanan Anda, dan tim expert kami akan merancang itinerary eksklusif khusus untuk Anda."
+    },
+    "features": [
+      { "title": "Bebas Pilih Destinasi", "desc": "Eksplorasi tempat anti-mainstream" },
+      { "title": "Waktu Fleksibel", "desc": "Tentukan sendiri tanggal keberangkatan" },
+      { "title": "Sesuaikan Budget", "desc": "Fasilitas sesuai anggaran Anda" }
+    ]
+  },
+  "blog": {
+    "seo": {
+      "title": "Blog Wisata",
+      "description": "Tips perjalanan, panduan wisata, dan artikel menarik tentang Sumatera Utara.",
+      "keywords": "tips wisata sumut, panduan danau toba, blog perjalanan"
+    },
+    "hero": {
+      "title": "Blog & Artikel Wisata",
+      "desc": "Temukan inspirasi, tips perjalanan, dan cerita menarik seputar destinasi wisata terbaik di Sumatera Utara."
+    },
+    "sidebar": {
+      "searchTitle": "Cari Artikel",
+      "searchPlaceholder": "Masukkan kata kunci...",
+      "categoryTitle": "Kategori",
+      "categories": ["Tips Perjalanan", "Destinasi", "Budaya", "Kuliner", "Event", "Berita"],
+      "newsletterTitle": "Berlangganan Newsletter",
+      "newsletterDesc": "Dapatkan informasi terbaru seputar promo dan destinasi menarik di Sumatera Utara.",
+      "newsletterPlaceholder": "Email Anda",
+      "newsletterButton": "Daftar Sekarang"
+    }
+  },
+  "gallery": {
+    "seo": {
+      "title": "Galeri Wisata",
+      "description": "Lihat keindahan alam dan budaya Sumatera Utara melalui galeri foto kami.",
+      "keywords": "foto danau toba, pemandangan sumatera utara, galeri wisata"
+    },
+    "hero": {
+      "title": "Galeri Destinasi",
+      "desc": "Keindahan visual Sumatera Utara dalam lensa. Temukan inspirasi untuk perjalanan Anda selanjutnya."
+    },
+    "cta": {
+      "title": "Punya Foto Keren di Sumut?",
+      "desc": "Bagikan pengalaman Anda dan biarkan dunia melihat keindahan Sumatera Utara melalui lensa Anda.",
+      "button": "Tag Kami di Instagram"
+    }
+  },
+  "vehicles": {
+    "seo": {
+      "title": "Rental Mobil",
+      "description": "Penyewaan mobil terpercaya di Sumatera Utara. Armada bersih, driver ramah, harga kompetitif.",
+      "keywords": "sewa mobil medan, rental mobil sumut, transportasi wisata medan"
+    },
+    "hero": {
+      "title": "Rental Mobil & Transportasi",
+      "desc": "Armada terbaik dengan kondisi prima untuk menemani perjalanan Anda menjelajahi Sumatera Utara dengan nyaman dan aman."
+    },
+    "card": {
+      "capacity": "Kapasitas",
+      "person": "{{count}} Orang",
+      "fuel": "BBM",
+      "fuelType": "Pertamax",
+      "transmission": "Transmisi",
+      "transType": "Matic/Manual",
+      "priceLabel": "Harga per hari",
+      "bookNow": "Sewa Sekarang",
+      "whatsappMsg": "Halo, saya ingin sewa {{name}}"
+    }
+  },
+  "packageDetail": {
+    "toast": {
+      "title": "Pesanan Terkirim!",
+      "desc": "Terima kasih! Pesanan Anda untuk {{title}} telah kami terima. Tim kami akan segera menghubungi Anda."
+    },
+    "seo": {
+      "keywords": "tour {{city}}, liburan {{city}}, {{title}}"
+    },
+    "hero": {
+      "cityFallback": "Destinasi Sumut"
+    },
+    "tabs": {
+      "info": "Informasi Umum",
+      "itinerary": "Itinerary",
+      "facilities": "Fasilitas",
+      "policy": "Kebijakan"
+    },
+    "about": {
+      "title": "Tentang Perjalanan Ini",
+      "desc": "Jelajahi keajaiban Sumatera Utara bersama panduan lokal berpengalaman. Paket <strong>{{title}}</strong> dirancang khusus untuk memberikan pengalaman yang menyeluruh antara menikmati alam, mempelajari budaya, dan menikmati kuliner khas daerah."
+    },
+    "facilities": {
+      "title": "Fasilitas Termasuk:",
+      "list": [
+        "Akomodasi Hotel Bintang 3/4",
+        "Transportasi AC (Innova/Hiace)",
+        "Makan sesuai itinerary",
+        "Tiket masuk wisata",
+        "Guide Lokal Profesional",
+        "Dokumentasi perjalanan"
+      ]
+    },
+    "booking": {
+      "priceLabel": "Harga Mulai Dari",
+      "priceNote": "per pax (minimal 2 pax)",
+      "date": "Pilih Tanggal",
+      "participant": "Jumlah Peserta",
+      "person": "{{count}} Orang",
+      "bookNow": "Pesan Sekarang",
+      "whatsapp": "Tanya via WhatsApp"
+    }
+  },
+  "packages": {
+    "seo": {
+      "title": "Paket Wisata",
+      "description": "Temukan berbagai paket wisata menarik di Sumatera Utara. Danau Toba, Berastagi, Bukit Lawang, dan banyak lagi.",
+      "keywords": "paket wisata sumut, tour danau toba, paket liburan medan"
+    },
+    "hero": {
+      "title": "Paket Wisata Sumatera Utara",
+      "desc": "Eksplorasi keindahan Danau Toba, dataran tinggi Berastagi, hingga pesona Nias dalam satu perjalanan tak terlupakan.",
+      "searchPlaceholder": "Cari paket wisata impian Anda..."
+    },
+    "filter": {
+      "title": "Filter Pencarian",
+      "city": "Pilih Wilayah",
+      "allCities": "Semua Wilayah Sumut",
+      "priceRange": "Rentang Harga",
+      "minPrice": "Minimum (Rp)",
+      "maxPrice": "Maksimum (Rp)"
+    },
+    "empty": {
+      "title": "Tidak ada paket ditemukan",
+      "desc": "Coba ubah kriteria filter Anda untuk melihat paket lainnya.",
+      "reset": "Reset Filter"
+    }
+  },
+  "home": {
+    "seo": {
+      "title": "Beranda",
+      "description": "Platform pariwisata terpercaya untuk menjelajahi pesona alam dan keunikan budaya Sumatera Utara. Jadikan perjalanan Anda tak terlupakan bersama kami.",
+      "keywords": "wisata sumut, danau toba, liburan sumatera utara"
+    },
+    "hero": {
+      "subtitle": "Surga Tersembunyi Sumatera Utara",
+      "title": "Jelajahi",
+      "titleHighlight": "Sumatera Utara",
+      "desc": "Dari keagungan Danau Toba hingga rimba Bukit Lawang. Temukan keajaiban alam dan kekayaan budaya di ujung utara Sumatera.",
+      "searchPlaceholder": "Mau kemana di Sumut?",
+      "searchButton": "Cari Destinasi"
+    },
+    "region": {
+      "title": "Jelajahi Per Wilayah",
+      "desc": "Setiap sudut Sumatera Utara menawarkan pesona dan petualangan yang berbeda. Pilih destinasi impian Anda.",
+      "seePackage": "Lihat Paket"
+    },
+    "featured": {
+      "title": "Paket Pilihan",
+      "desc": "Pengalaman terbaik yang kami kurasi khusus untuk petualangan Anda di Sumatera Utara.",
+      "allPackages": "Semua Paket",
+      "destination": "Destinasi",
+      "detail": "Detail"
+    },
+    "stats": {
+      "travelers": "Wisatawan",
+      "mainDestinations": "Destinasi Utama",
+      "avgRating": "Rating Rata-rata",
+      "support": "Dukungan"
+    },
+    "testimonials": {
+      "title": "Kata Mereka",
+      "desc": "Pengalaman tak terlupakan dari para wisatawan yang telah menjelajahi Sumatera Utara bersama kami.",
+      "tourist": "Wisatawan"
+    },
+    "cta": {
+      "title": "Rencanakan Perjalanan Anda",
+      "desc": "Punya destinasi impian di Sumatera Utara yang belum ada di paket kami? Mari buat rencana perjalanan khusus untuk Anda.",
+      "button": "Buat Custom Trip Sekarang"
+    }
+  },
+  "navbar": {
+    "home": "Beranda",
+    "packages": "Paket Wisata",
+    "vehicles": "Rental Mobil",
+    "gallery": "Galeri",
+    "blog": "Blog",
+    "custom_trip": "Custom Trip",
+    "admin": "Panel Admin"
+  }
+}

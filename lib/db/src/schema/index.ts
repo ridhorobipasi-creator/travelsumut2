@@ -9,3 +9,4 @@ export * from "./blog";
 export * from "./testimonials";
 export * from "./banners";
 export * from "./custom-trips";
+export * from "./wishlists";

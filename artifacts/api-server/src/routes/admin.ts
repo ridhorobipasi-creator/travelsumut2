@@ -5,9 +5,11 @@ import {
   packagesTable,
   vehiclesTable,
   customTripsTable,
+  destinationsTable,
+  testimonialsTable,
   insertCustomTripSchema,
 } from "@workspace/db/schema";
-import { eq, count, sum } from "drizzle-orm";
+import { eq, count, sum, desc } from "drizzle-orm";
 
 const router: IRouter = Router();
 
@@ -22,23 +24,90 @@ router.get("/admin/stats", async (req, res) => {
     const [totalPackagesResult] = await db.select({ count: count() }).from(packagesTable);
     const [totalVehiclesResult] = await db.select({ count: count() }).from(vehiclesTable);
     const [totalCustomTripsResult] = await db.select({ count: count() }).from(customTripsTable);
+    const [totalDestinationsResult] = await db.select({ count: count() }).from(destinationsTable);
+    const [pendingTestimonialsResult] = await db
+      .select({ count: count() })
+      .from(testimonialsTable)
+      .where(eq(testimonialsTable.isApproved, false));
 
     const recentBookings = await db
-      .select()
+      .select({
+        id: bookingsTable.id,
+        type: bookingsTable.type,
+        status: bookingsTable.status,
+        customerName: bookingsTable.customerName,
+        customerEmail: bookingsTable.customerEmail,
+        customerPhone: bookingsTable.customerPhone,
+        packageId: bookingsTable.packageId,
+        vehicleId: bookingsTable.vehicleId,
+        startDate: bookingsTable.startDate,
+        endDate: bookingsTable.endDate,
+        participants: bookingsTable.participants,
+        totalPrice: bookingsTable.totalPrice,
+        notes: bookingsTable.notes,
+        createdAt: bookingsTable.createdAt,
+        package: {
+          id: packagesTable.id,
+          title: packagesTable.title,
+          slug: packagesTable.slug,
+          description: packagesTable.description,
+          price: packagesTable.price,
+          duration: packagesTable.duration,
+          maxParticipants: packagesTable.maxParticipants,
+          imageUrl: packagesTable.imageUrl,
+          images: packagesTable.images,
+          includes: packagesTable.includes,
+          excludes: packagesTable.excludes,
+          itinerary: packagesTable.itinerary,
+          provinceId: packagesTable.provinceId,
+          cityId: packagesTable.cityId,
+          isFeatured: packagesTable.isFeatured,
+          isActive: packagesTable.isActive,
+          rating: packagesTable.rating,
+          totalReviews: packagesTable.totalReviews,
+          createdAt: packagesTable.createdAt,
+        },
+        vehicle: {
+          id: vehiclesTable.id,
+          name: vehiclesTable.name,
+          type: vehiclesTable.type,
+          brand: vehiclesTable.brand,
+          capacity: vehiclesTable.capacity,
+          pricePerDay: vehiclesTable.pricePerDay,
+          imageUrl: vehiclesTable.imageUrl,
+          images: vehiclesTable.images,
+          features: vehiclesTable.features,
+          isAvailable: vehiclesTable.isAvailable,
+          description: vehiclesTable.description,
+          createdAt: vehiclesTable.createdAt,
+        },
+      })
       .from(bookingsTable)
-      .orderBy(bookingsTable.createdAt)
+      .leftJoin(packagesTable, eq(bookingsTable.packageId, packagesTable.id))
+      .leftJoin(vehiclesTable, eq(bookingsTable.vehicleId, vehiclesTable.id))
+      .orderBy(desc(bookingsTable.createdAt))
       .limit(5);
 
     res.json({
       totalBookings: totalBookingsResult?.count ?? 0,
       activeBookings: activeBookingsResult?.count ?? 0,
-      totalRevenue: revenueResult?.total ?? 0,
+      totalRevenue: Number(revenueResult?.total) || 0,
       totalPackages: totalPackagesResult?.count ?? 0,
       totalVehicles: totalVehiclesResult?.count ?? 0,
       totalCustomTrips: totalCustomTripsResult?.count ?? 0,
+      totalDestinations: totalDestinationsResult?.count ?? 0,
+      pendingTestimonials: pendingTestimonialsResult?.count ?? 0,
       recentBookings: recentBookings.map(b => ({
         ...b,
-        createdAt: b.createdAt.toISOString(),
+        createdAt: b.createdAt instanceof Date ? b.createdAt.toISOString() : b.createdAt,
+        package: b.package?.id ? {
+          ...b.package,
+          createdAt: b.package.createdAt instanceof Date ? b.package.createdAt.toISOString() : b.package.createdAt,
+        } : null,
+        vehicle: b.vehicle?.id ? {
+          ...b.vehicle,
+          createdAt: b.vehicle.createdAt instanceof Date ? b.vehicle.createdAt.toISOString() : b.vehicle.createdAt,
+        } : null,
       })),
     });
   } catch (err) {

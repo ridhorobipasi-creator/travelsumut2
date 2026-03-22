@@ -1,13 +1,19 @@
 import { Router, type IRouter } from "express";
 import { db } from "@workspace/db";
 import { destinationsTable, citiesTable, provincesTable, insertDestinationSchema } from "@workspace/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 const router: IRouter = Router();
 
 router.get("/destinations", async (req, res) => {
   try {
     const cityId = req.query.cityId ? parseInt(req.query.cityId as string) : undefined;
+    const provinceId = req.query.provinceId ? parseInt(req.query.provinceId as string) : undefined;
+
+    const conditions: ReturnType<typeof eq>[] = [];
+    if (cityId) conditions.push(eq(destinationsTable.cityId, cityId));
+    if (provinceId) conditions.push(eq(citiesTable.provinceId, provinceId));
+
     const query = db
       .select({
         id: destinationsTable.id,
@@ -31,9 +37,9 @@ router.get("/destinations", async (req, res) => {
       .from(destinationsTable)
       .leftJoin(citiesTable, eq(destinationsTable.cityId, citiesTable.id));
 
-    const destinations = cityId
-      ? await query.where(eq(destinationsTable.cityId, cityId))
-      : await query;
+    const destinations = conditions.length > 0
+      ? await query.where(and(...conditions)).orderBy(destinationsTable.name)
+      : await query.orderBy(destinationsTable.name);
 
     res.json(destinations.map(d => ({ ...d, createdAt: d.createdAt.toISOString() })));
   } catch (err) {

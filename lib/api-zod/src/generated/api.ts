@@ -864,6 +864,10 @@ export const UpdateBookingParams = zod.object({
 export const UpdateBookingBody = zod.object({
   status: zod.string(),
   notes: zod.string().nullish(),
+  customerName: zod.string().optional(),
+  customerEmail: zod.string().optional(),
+  customerPhone: zod.string().nullish(),
+  startDate: zod.string().optional().describe("ISO date string for trip start"),
 });
 
 export const UpdateBookingResponse = zod.object({
@@ -978,6 +982,29 @@ export const CreateGalleryItemBody = zod.object({
   imageUrl: zod.string(),
   category: zod.string().nullish(),
   destinationId: zod.number().nullish(),
+});
+
+/**
+ * @summary Update a gallery item
+ */
+export const UpdateGalleryItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateGalleryItemBody = zod.object({
+  title: zod.string(),
+  imageUrl: zod.string(),
+  category: zod.string().nullish(),
+  destinationId: zod.number().nullish(),
+});
+
+export const UpdateGalleryItemResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  imageUrl: zod.string(),
+  category: zod.string().nullish(),
+  destinationId: zod.number().nullish(),
+  createdAt: zod.string(),
 });
 
 /**
@@ -1118,6 +1145,7 @@ export const CreateTestimonialBody = zod.object({
   rating: zod.number(),
   comment: zod.string(),
   packageId: zod.number().nullish(),
+  isApproved: zod.boolean().optional(),
 });
 
 /**
@@ -1128,8 +1156,12 @@ export const UpdateTestimonialParams = zod.object({
 });
 
 export const UpdateTestimonialBody = zod.object({
-  isApproved: zod.boolean(),
-  comment: zod.string().nullish(),
+  customerName: zod.string().optional(),
+  customerAvatar: zod.string().nullish(),
+  rating: zod.number().optional(),
+  comment: zod.string().optional(),
+  packageId: zod.number().nullish(),
+  isApproved: zod.boolean().optional(),
 });
 
 export const UpdateTestimonialResponse = zod.object({
@@ -1229,6 +1261,8 @@ export const GetAdminStatsResponse = zod.object({
   totalPackages: zod.number(),
   totalVehicles: zod.number(),
   totalCustomTrips: zod.number(),
+  totalDestinations: zod.number().optional(),
+  pendingTestimonials: zod.number().optional(),
   recentBookings: zod.array(
     zod.object({
       id: zod.number(),

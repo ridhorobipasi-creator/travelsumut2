@@ -1,17 +1,27 @@
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { useGetAdminStats } from "@workspace/api-client-react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { formatRupiah } from "@/lib/utils";
+import { formatRupiah, formatDate } from "@/lib/utils";
 import { ShoppingCart, Wallet, Compass, CarFront, Users, TrendingUp } from "lucide-react";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
+import { MOCK_ADMIN_STATS } from "@/lib/mockData";
+import { useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AdminDashboard() {
-  const { data: stats, isLoading } = useGetAdminStats();
+  const { data: fetchedStats, isLoading, error } = useGetAdminStats();
+  const { toast } = useToast();
 
-  if (isLoading) {
-    return <AdminLayout><div className="flex h-full items-center justify-center"><LoadingSpinner /></div></AdminLayout>;
-  }
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Koneksi API Gagal",
+        description: "Menampilkan statistik simulasi karena server database belum terhubung.",
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
+
+  const stats = fetchedStats || MOCK_ADMIN_STATS;
 
   const statCards = [
     { title: "Total Pendapatan", value: formatRupiah(stats?.totalRevenue || 0), icon: Wallet, color: "text-emerald-600", bg: "bg-emerald-50 border-emerald-100", trend: "+12.5%" },
@@ -20,6 +30,10 @@ export default function AdminDashboard() {
     { title: "Paket Wisata", value: stats?.totalPackages || 0, icon: Compass, color: "text-purple-600", bg: "bg-purple-50 border-purple-100", trend: "+2" },
     { title: "Permintaan Trip", value: stats?.totalCustomTrips || 0, icon: CarFront, color: "text-rose-600", bg: "bg-rose-50 border-rose-100", trend: "+8.1%" },
   ];
+
+  if (isLoading && !fetchedStats) {
+    return <AdminLayout><div className="flex h-full items-center justify-center"><LoadingSpinner /></div></AdminLayout>;
+  }
 
   return (
     <AdminLayout>
@@ -77,7 +91,7 @@ export default function AdminDashboard() {
                         {booking.type}
                       </span>
                     </td>
-                    <td className="py-5 px-8 font-medium">{format(new Date(booking.startDate), 'dd MMM yyyy', { locale: id })}</td>
+                    <td className="py-5 px-8 font-medium">{formatDate(booking.startDate)}</td>
                     <td className="py-5 px-8 font-extrabold text-primary">{formatRupiah(booking.totalPrice)}</td>
                     <td className="py-5 px-8 text-center">
                       <span className={`inline-block px-3 py-1.5 rounded-full text-xs font-bold ${

@@ -1,17 +1,18 @@
 import { Router, type IRouter } from "express";
 import { db } from "@workspace/db";
 import { blogPostsTable, insertBlogPostSchema } from "@workspace/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 
 const router: IRouter = Router();
 
 router.get("/blog", async (req, res) => {
   try {
-    const { category, published } = req.query;
+    const { category, tag, published } = req.query;
     const conditions: ReturnType<typeof eq>[] = [];
     if (category) conditions.push(eq(blogPostsTable.category, category as string));
     if (published === "true") conditions.push(eq(blogPostsTable.isPublished, true));
     if (published === "false") conditions.push(eq(blogPostsTable.isPublished, false));
+    if (tag) conditions.push(sql`${blogPostsTable.tags} @> ${JSON.stringify([tag])}::jsonb`);
 
     const posts = conditions.length > 0
       ? await db.select().from(blogPostsTable).where(and(...conditions)).orderBy(blogPostsTable.createdAt)

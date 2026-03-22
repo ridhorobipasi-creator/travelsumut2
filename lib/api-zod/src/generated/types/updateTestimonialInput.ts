@@ -7,6 +7,10 @@
  */
 
 export interface UpdateTestimonialInput {
-  isApproved: boolean;
-  comment?: string | null;
+  customerName?: string;
+  customerAvatar?: string | null;
+  rating?: number;
+  comment?: string;
+  packageId?: number | null;
+  isApproved?: boolean;
 }

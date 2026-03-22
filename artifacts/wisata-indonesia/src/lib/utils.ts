@@ -14,8 +14,32 @@ export function formatRupiah(amount: number): string {
   }).format(amount);
 }
 
-export function formatDate(dateString: string): string {
-  return new Intl.DateTimeFormat("id-ID", {
-    dateStyle: "long",
-  }).format(new Date(dateString));
+export function formatDate(dateString: string | undefined | null): string {
+  if (!dateString) return "-";
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "-";
+    return new Intl.DateTimeFormat("id-ID", {
+      dateStyle: "long",
+    }).format(date);
+  } catch (e) {
+    return "-";
+  }
+}
+
+export function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
+}
+
+export function formatCompactNumber(number: number): string {
+  return new Intl.NumberFormat("id-ID", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(number);
 }

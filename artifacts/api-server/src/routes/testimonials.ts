@@ -21,7 +21,14 @@ router.get("/testimonials", async (req, res) => {
 router.post("/testimonials", async (req, res) => {
   try {
     const data = insertTestimonialSchema.parse(req.body);
-    const [testimonial] = await db.insert(testimonialsTable).values(data).returning();
+    const isApproved =
+      typeof (req.body as { isApproved?: boolean })?.isApproved === "boolean"
+        ? (req.body as { isApproved: boolean }).isApproved
+        : false;
+    const [testimonial] = await db
+      .insert(testimonialsTable)
+      .values({ ...data, isApproved })
+      .returning();
     res.status(201).json({ ...testimonial, createdAt: testimonial.createdAt.toISOString() });
   } catch (err) {
     req.log.error(err, "Failed to create testimonial");
@@ -32,10 +39,22 @@ router.post("/testimonials", async (req, res) => {
 router.put("/testimonials/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const { isApproved, comment } = req.body;
+    const b = req.body as Record<string, unknown>;
+    const patch: Record<string, unknown> = {};
+    if (typeof b.customerName === "string") patch.customerName = b.customerName;
+    if (b.customerAvatar !== undefined) patch.customerAvatar = b.customerAvatar;
+    if (typeof b.rating === "number") patch.rating = b.rating;
+    if (typeof b.comment === "string") patch.comment = b.comment;
+    if (b.packageId !== undefined) patch.packageId = b.packageId === null ? null : Number(b.packageId);
+    if (typeof b.isApproved === "boolean") patch.isApproved = b.isApproved;
+
+    if (Object.keys(patch).length === 0) {
+      return res.status(400).json({ error: "Bad request", message: "No fields to update" });
+    }
+
     const [testimonial] = await db
       .update(testimonialsTable)
-      .set({ isApproved, ...(comment !== undefined ? { comment } : {}) })
+      .set(patch as typeof testimonialsTable.$inferInsert)
       .where(eq(testimonialsTable.id, id))
       .returning();
     if (!testimonial) return res.status(404).json({ error: "Not found" });

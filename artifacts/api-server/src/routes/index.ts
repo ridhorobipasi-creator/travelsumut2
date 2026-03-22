@@ -12,6 +12,8 @@ import testimonialsRouter from "./testimonials";
 import bannersRouter from "./banners";
 import adminRouter from "./admin";
 
+import wishlistRouter from "./wishlist";
+
 export function registerRoutes(app: Express): void {
   app.use("/api", healthRouter);
   app.use("/api", provincesRouter);
@@ -25,4 +27,5 @@ export function registerRoutes(app: Express): void {
   app.use("/api", testimonialsRouter);
   app.use("/api", bannersRouter);
   app.use("/api", adminRouter);
+  app.use("/api", wishlistRouter);
 }

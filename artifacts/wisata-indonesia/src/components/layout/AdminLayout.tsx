@@ -3,25 +3,83 @@ import { Link, useRoute } from "wouter";
 import { 
   LayoutDashboard, ShoppingCart, Compass, Map, 
   CarFront, Image as ImageIcon, FileText, LayoutTemplate, 
-  MessageSquare, Menu, LogOut, X, PenTool
+  MessageSquare, Menu, LogOut, X, PenTool, Star, User
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ADMIN_LINKS = [
-  { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Pesanan", href: "/admin/orders", icon: ShoppingCart },
-  { name: "Custom Trip", href: "/admin/custom-trips", icon: PenTool },
-  { name: "Paket Wisata", href: "/admin/packages", icon: Compass },
-  { name: "Wilayah", href: "/admin/regions", icon: Map },
-  { name: "Kendaraan", href: "/admin/vehicles", icon: CarFront },
-  { name: "Galeri", href: "/admin/gallery", icon: ImageIcon },
-  { name: "Blog", href: "/admin/blog", icon: FileText },
-  { name: "Banners", href: "/admin/banners", icon: LayoutTemplate },
-  { name: "Testimoni", href: "/admin/testimonials", icon: MessageSquare },
+  {
+    section: "Utama",
+    links: [
+      { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+    ],
+  },
+  {
+    section: "Pesanan & Trip",
+    links: [
+      { name: "Semua Pesanan", href: "/admin/all-orders", icon: ShoppingCart },
+      { name: "Laporan Pesanan", href: "/admin/order-report", icon: FileText },
+      { name: "Pesanan & Jadwal", href: "/admin/order-schedule", icon: FileText },
+      { name: "Custom Trip Requests", href: "/admin/custom-trip-requests", icon: PenTool },
+      { name: "Jadwal Trip", href: "/admin/trip-schedule", icon: FileText },
+      { name: "Jadwal Rental", href: "/admin/rental-schedule", icon: FileText },
+    ],
+  },
+  {
+    section: "Produk & Layanan",
+    links: [
+      { name: "Paket Wisata", href: "/admin/packages", icon: Compass },
+      { name: "Kategori", href: "/admin/category", icon: FileText },
+      { name: "Partner", href: "/admin/partner", icon: FileText },
+      { name: "Hotel", href: "/admin/hotel", icon: FileText },
+      { name: "Kendaraan", href: "/admin/vehicles", icon: CarFront },
+    ],
+  },
+  {
+    section: "Konten & Media",
+    links: [
+      { name: "Galeri", href: "/admin/gallery", icon: ImageIcon },
+      { name: "Blog", href: "/admin/blog", icon: FileText },
+      { name: "Banners", href: "/admin/banners", icon: LayoutTemplate },
+      { name: "Instagram Feeds", href: "/admin/instagram-feeds", icon: ImageIcon },
+      { name: "Halaman Statis", href: "/admin/static-pages", icon: FileText },
+    ],
+  },
+  {
+    section: "Testimoni & Pesan",
+    links: [
+      { name: "Testimoni", href: "/admin/testimonials", icon: MessageSquare },
+      { name: "Pesan Kontak", href: "/admin/contact-messages", icon: MessageSquare },
+      { name: "Ulasan / Review", href: "/admin/user-review", icon: Star },
+    ],
+  },
+  {
+    section: "Pengguna & Admin",
+    links: [
+      { name: "Manajemen Pengguna", href: "/admin/admin-user", icon: User },
+    ],
+  },
+  {
+    section: "Pengaturan",
+    links: [
+      { name: "Sistem & Pengaturan", href: "/admin/settings", icon: Menu },
+      { name: "Kelola Pengaturan", href: "/admin/manage-settings", icon: Menu },
+      { name: "Bahasa & Kurs", href: "/admin/language-currency", icon: Menu },
+      { name: "Pengaturan Umum", href: "/admin/setting/general", icon: Menu },
+      { name: "Profil Bisnis", href: "/admin/setting/business-profile", icon: Menu },
+      { name: "Data Trip", href: "/admin/setting/trip-data", icon: Menu },
+      { name: "Log Aktivitas", href: "/admin/setting/log-activity", icon: Menu },
+    ],
+  },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("isAdminAuthenticated");
+    window.location.href = "/login";
+  };
 
   return (
     <div className="min-h-screen bg-muted flex">
@@ -57,33 +115,45 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto py-8 px-4 space-y-2">
-          {ADMIN_LINKS.map((link) => {
-            const [isActive] = useRoute(link.href);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setSidebarOpen(false)}
-                className={cn(
-                  "flex items-center gap-3 px-4 py-3.5 rounded-xl font-bold transition-all",
-                  isActive 
-                    ? "bg-primary text-white shadow-soft" 
-                    : "text-sidebar-foreground/70 hover:text-white hover:bg-sidebar-accent"
-                )}
-              >
-                <link.icon className="w-5 h-5" />
-                {link.name}
-              </Link>
-            );
-          })}
+        <div className="flex-1 overflow-y-auto py-8 px-4 space-y-6">
+          {ADMIN_LINKS.map((group) => (
+            <div key={group.section}>
+              <div className="text-xs font-bold uppercase text-sidebar-foreground/40 px-2 mb-2 tracking-widest">
+                {group.section}
+              </div>
+              <div className="space-y-1">
+                {group.links.map((link) => {
+                  const [isActive] = useRoute(link.href);
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setSidebarOpen(false)}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-3.5 rounded-xl font-bold transition-all",
+                        isActive 
+                          ? "bg-primary text-white shadow-soft" 
+                          : "text-sidebar-foreground/70 hover:text-white hover:bg-sidebar-accent"
+                      )}
+                    >
+                      <link.icon className="w-5 h-5" />
+                      {link.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="p-6 border-t border-sidebar-border shrink-0">
-          <Link href="/" className="flex items-center justify-center gap-3 w-full px-4 py-3.5 rounded-xl font-bold text-sidebar-foreground hover:text-white bg-sidebar-accent hover:bg-destructive/90 transition-colors">
+          <button 
+            onClick={handleLogout}
+            className="flex items-center justify-center gap-3 w-full px-4 py-3.5 rounded-xl font-bold text-sidebar-foreground hover:text-white bg-sidebar-accent hover:bg-destructive/90 transition-colors"
+          >
             <LogOut className="w-5 h-5" />
             Keluar
-          </Link>
+          </button>
         </div>
       </aside>
 
@@ -100,6 +170,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <h2 className="text-xl font-display font-bold text-foreground">Sistem Manajemen Platform</h2>
           </div>
           <div className="flex items-center gap-4">
+            <button 
+              onClick={handleLogout}
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all"
+            >
+              <LogOut className="w-4 h-4" /> Keluar
+            </button>
             <div className="flex items-center gap-3">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-bold text-foreground">Administrator</p>

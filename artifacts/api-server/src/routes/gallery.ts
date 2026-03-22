@@ -29,6 +29,19 @@ router.post("/gallery", async (req, res) => {
   }
 });
 
+router.put("/gallery/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const data = insertGallerySchema.parse(req.body);
+    const [item] = await db.update(galleryTable).set(data).where(eq(galleryTable.id, id)).returning();
+    if (!item) return res.status(404).json({ error: "Not found" });
+    res.json({ ...item, createdAt: item.createdAt.toISOString() });
+  } catch (err) {
+    req.log.error(err, "Failed to update gallery item");
+    res.status(400).json({ error: "Bad request" });
+  }
+});
+
 router.delete("/gallery/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id);

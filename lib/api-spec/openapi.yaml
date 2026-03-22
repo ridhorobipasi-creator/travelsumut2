@@ -634,6 +634,29 @@ paths:
                 $ref: "#/components/schemas/GalleryItem"
 
   /gallery/{id}:
+    put:
+      operationId: updateGalleryItem
+      tags: [gallery]
+      summary: Update a gallery item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGalleryItemInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryItem"
     delete:
       operationId: deleteGalleryItem
       tags: [gallery]
@@ -1430,6 +1453,16 @@ components:
         notes:
           type: string
           nullable: true
+        customerName:
+          type: string
+        customerEmail:
+          type: string
+        customerPhone:
+          type: string
+          nullable: true
+        startDate:
+          type: string
+          description: ISO date string for trip start
       required:
         - status
 
@@ -1593,6 +1626,8 @@ components:
         packageId:
           type: integer
           nullable: true
+        isApproved:
+          type: boolean
       required:
         - customerName
         - rating
@@ -1601,13 +1636,20 @@ components:
     UpdateTestimonialInput:
       type: object
       properties:
-        isApproved:
-          type: boolean
-        comment:
+        customerName:
+          type: string
+        customerAvatar:
           type: string
           nullable: true
-      required:
-        - isApproved
+        rating:
+          type: integer
+        comment:
+          type: string
+        packageId:
+          type: integer
+          nullable: true
+        isApproved:
+          type: boolean
 
     Banner:
       type: object

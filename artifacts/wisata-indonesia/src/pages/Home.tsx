@@ -1,9 +1,13 @@
 import { PublicLayout } from "@/components/layout/PublicLayout";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Search, MapPin, Calendar, Star, ArrowRight, Compass, Shield, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useGetPackages, useGetTestimonials } from "@workspace/api-client-react";
 import { formatRupiah } from "@/lib/utils";
+import { MOCK_PACKAGES, MOCK_TESTIMONIALS } from "@/lib/mockData";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { SEO } from "@/components/ui/SEO";
 
 const REGIONS = [
   { name: "Danau Toba", image: "https://images.unsplash.com/photo-1599408913599-71e0ea9283fa?w=600" },
@@ -15,11 +19,30 @@ const REGIONS = [
 ];
 
 export default function Home() {
+  const { t } = useTranslation();
+  const [, setLocation] = useLocation();
+  const [searchQuery, setSearchQuery] = useState("");
   const { data: featuredPackages } = useGetPackages({ featured: true });
   const { data: testimonials } = useGetTestimonials({ approved: true });
 
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      setLocation(`/paket-wisata?search=${encodeURIComponent(searchQuery)}`);
+    } else {
+      setLocation("/paket-wisata");
+    }
+  };
+
+  const displayPackages = featuredPackages && featuredPackages.length > 0 ? featuredPackages : MOCK_PACKAGES.filter(p => p.featured);
+  const displayTestimonials = testimonials && testimonials.length > 0 ? testimonials : MOCK_TESTIMONIALS;
+
   return (
     <PublicLayout>
+      <SEO 
+        title={t('home.seo.title')}
+        description={t('home.seo.description')}
+        keywords={t('home.seo.keywords')}
+      />
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-20 -mt-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -39,13 +62,13 @@ export default function Home() {
             className="max-w-4xl"
           >
             <span className="inline-block py-1 px-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-medium text-sm mb-6 tracking-wide uppercase">
-              Surga Tersembunyi Sumatera Utara
+              {t('home.hero.subtitle')}
             </span>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-extrabold leading-tight mb-6">
-              Jelajahi <span className="text-secondary">Sumatera Utara</span>
+              {t('home.hero.title')} <span className="text-secondary">{t('home.hero.titleHighlight')}</span>
             </h1>
             <p className="text-lg md:text-2xl text-white/90 mb-12 max-w-2xl leading-relaxed font-light">
-              Dari keagungan Danau Toba hingga rimba Bukit Lawang. Temukan keajaiban alam dan kekayaan budaya di ujung utara Sumatera.
+              {t('home.hero.desc')}
             </p>
 
             {/* Clean Search Bar */}
@@ -54,7 +77,10 @@ export default function Home() {
                 <MapPin className="text-primary w-5 h-5 shrink-0" />
                 <input 
                   type="text" 
-                  placeholder="Mau kemana di Sumut?" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                  placeholder={t('home.hero.searchPlaceholder')} 
                   className="bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground w-full font-medium"
                 />
               </div>
@@ -65,9 +91,12 @@ export default function Home() {
                   className="bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground w-full font-medium"
                 />
               </div>
-              <button className="bg-primary hover:bg-primary/90 text-white px-8 py-4 md:py-3 rounded-xl md:rounded-full font-bold transition-colors flex items-center justify-center gap-2 shrink-0">
+              <button 
+                onClick={handleSearch}
+                className="bg-primary hover:bg-primary/90 text-white px-8 py-4 md:py-3 rounded-xl md:rounded-full font-bold transition-colors flex items-center justify-center gap-2 shrink-0"
+              >
                 <Search className="w-5 h-5" />
-                Cari Destinasi
+                {t('home.hero.searchButton')}
               </button>
             </div>
           </motion.div>
@@ -78,8 +107,8 @@ export default function Home() {
       <section className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-primary">Jelajahi Per Wilayah</h2>
-            <p className="text-muted-foreground text-lg">Setiap sudut Sumatera Utara menawarkan pesona dan petualangan yang berbeda. Pilih destinasi impian Anda.</p>
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-primary">{t('home.region.title')}</h2>
+            <p className="text-muted-foreground text-lg">{t('home.region.desc')}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -101,7 +130,7 @@ export default function Home() {
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <h3 className="text-3xl font-display font-bold text-white mb-2">{region.name}</h3>
                     <div className="flex items-center gap-2 text-white/80 font-medium opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                      <span>Lihat Paket</span>
+                      <span>{t('home.region.seePackage')}</span>
                       <ArrowRight className="w-4 h-4" />
                     </div>
                   </div>
@@ -117,16 +146,16 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
             <div className="max-w-2xl">
-              <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 text-primary">Paket Pilihan</h2>
-              <p className="text-muted-foreground text-lg">Pengalaman terbaik yang kami kurasi khusus untuk petualangan Anda di Sumatera Utara.</p>
+              <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 text-primary">{t('home.featured.title')}</h2>
+              <p className="text-muted-foreground text-lg">{t('home.featured.desc')}</p>
             </div>
             <Link href="/paket-wisata" className="hidden md:flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all uppercase tracking-wide text-sm">
-              Semua Paket <ArrowRight className="w-5 h-5" />
+              {t('home.featured.allPackages')} <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredPackages?.slice(0, 3).map((pkg, i) => (
+            {displayPackages?.slice(0, 3)?.map((pkg, i) => (
               <motion.div 
                 key={pkg.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -148,7 +177,7 @@ export default function Home() {
                 </div>
                 <div className="p-8">
                   <div className="flex items-center gap-2 text-sm text-secondary font-bold uppercase tracking-wider mb-3">
-                    <MapPin className="w-4 h-4" /> {pkg.city?.name || 'Destinasi'}, Sumut
+                    <MapPin className="w-4 h-4" /> {pkg.city?.name || t('home.featured.destination')}, Sumut
                   </div>
                   <h3 className="text-2xl font-bold mb-3 text-foreground leading-tight line-clamp-2 group-hover:text-primary transition-colors">{pkg.title}</h3>
                   <p className="text-muted-foreground line-clamp-2 mb-6 text-base">{pkg.description}</p>
@@ -158,7 +187,7 @@ export default function Home() {
                       <p className="text-xl font-bold text-primary">{formatRupiah(pkg.price)}</p>
                     </div>
                     <Link href={`/paket-wisata/${pkg.slug}`} className="bg-primary text-white hover:bg-primary/90 px-6 py-3 rounded-xl font-medium transition-colors">
-                      Detail
+                      {t('home.featured.detail')}
                     </Link>
                   </div>
                 </div>
@@ -174,19 +203,19 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-primary-foreground/10">
             <div className="text-center px-4">
               <div className="text-4xl md:text-5xl font-display font-bold mb-2">156+</div>
-              <div className="text-primary-foreground/80 font-medium">Wisatawan</div>
+              <div className="text-primary-foreground/80 font-medium">{t('home.stats.travelers')}</div>
             </div>
             <div className="text-center px-4">
               <div className="text-4xl md:text-5xl font-display font-bold mb-2">6</div>
-              <div className="text-primary-foreground/80 font-medium">Destinasi Utama</div>
+              <div className="text-primary-foreground/80 font-medium">{t('home.stats.mainDestinations')}</div>
             </div>
             <div className="text-center px-4">
               <div className="text-4xl md:text-5xl font-display font-bold mb-2">4.8</div>
-              <div className="text-primary-foreground/80 font-medium">Rating Rata-rata</div>
+              <div className="text-primary-foreground/80 font-medium">{t('home.stats.avgRating')}</div>
             </div>
             <div className="text-center px-4">
               <div className="text-4xl md:text-5xl font-display font-bold mb-2">24/7</div>
-              <div className="text-primary-foreground/80 font-medium">Dukungan</div>
+              <div className="text-primary-foreground/80 font-medium">{t('home.stats.support')}</div>
             </div>
           </div>
         </div>
@@ -196,12 +225,12 @@ export default function Home() {
       <section className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-primary">Kata Mereka</h2>
-            <p className="text-muted-foreground text-lg">Pengalaman tak terlupakan dari para wisatawan yang telah menjelajahi Sumatera Utara bersama kami.</p>
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-primary">{t('home.testimonials.title')}</h2>
+            <p className="text-muted-foreground text-lg">{t('home.testimonials.desc')}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials?.slice(0, 3).map((testimonial, i) => (
+            {displayTestimonials?.slice(0, 3)?.map((testimonial, i) => (
               <motion.div 
                 key={testimonial.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -224,7 +253,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-bold text-foreground">{testimonial.customerName}</h4>
-                    <p className="text-sm text-muted-foreground">Wisatawan</p>
+                    <p className="text-sm text-muted-foreground">{t('home.testimonials.tourist')}</p>
                   </div>
                 </div>
               </motion.div>
@@ -237,12 +266,12 @@ export default function Home() {
       <section className="py-24 bg-muted/30 relative overflow-hidden">
         <div className="absolute inset-0 bg-primary/5" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-primary">Rencanakan Perjalanan Anda</h2>
+          <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-primary">{t('home.cta.title')}</h2>
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Punya destinasi impian di Sumatera Utara yang belum ada di paket kami? Mari buat rencana perjalanan khusus untuk Anda.
+            {t('home.cta.desc')}
           </p>
           <Link href="/custom-trip" className="inline-flex items-center justify-center bg-secondary text-white hover:bg-secondary/90 px-8 py-4 rounded-full font-bold text-lg transition-colors shadow-soft-lg">
-            Buat Custom Trip Sekarang
+            {t('home.cta.button')}
           </Link>
         </div>
       </section>

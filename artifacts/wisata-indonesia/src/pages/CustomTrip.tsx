@@ -1,47 +1,70 @@
-import { useState } from "react";
 import { PublicLayout } from "@/components/layout/PublicLayout";
-import { Compass, Calendar, MapPin, Users, Wallet } from "lucide-react";
-import { useCreateCustomTrip } from "@workspace/api-client-react";
+import { Compass, Calendar, MapPin, Wallet } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { z } from "zod";
+import { SEO } from "@/components/ui/SEO";
+import { useCreateCustomTrip } from "@workspace/api-client-react";
 
 const formSchema = z.object({
-  customerName: z.string().min(2, "Nama lengkap wajib diisi"),
+  customerName: z.string().min(2, "Nama minimal 2 karakter"),
+  customerPhone: z.string().min(8, "Nomor tidak valid"),
   customerEmail: z.string().email("Email tidak valid"),
-  customerPhone: z.string().min(10, "Nomor telepon tidak valid"),
-  destination: z.string().min(2, "Destinasi wajib diisi"),
-  startDate: z.string().min(1, "Tanggal mulai wajib diisi"),
+  destination: z.string().min(2, "Isi destinasi"),
+  startDate: z.string().min(1, "Pilih tanggal"),
   participants: z.coerce.number().min(1, "Minimal 1 peserta"),
-  budget: z.coerce.number().optional(),
-  requirements: z.string().optional()
+  budget: z.preprocess(
+    (v) => (v === "" || v === undefined || v === null ? undefined : Number(v)),
+    z.number().positive().optional(),
+  ),
+  requirements: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function CustomTrip() {
+function CustomTrip() {
+  const { t } = useTranslation();
   const { toast } = useToast();
-  const { mutate: createTrip, isPending } = useCreateCustomTrip();
-  
+  const createTrip = useCreateCustomTrip();
   const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValues>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (data: FormValues) => {
-    createTrip({ data }, {
-      onSuccess: () => {
-        toast({ title: "Berhasil!", description: "Permintaan custom trip Anda telah kami terima. Tim kami akan segera menghubungi Anda." });
-        reset();
-      },
-      onError: () => {
-        toast({ title: "Gagal", description: "Terjadi kesalahan saat mengirim permintaan.", variant: "destructive" });
-      }
-    });
+  const onSubmit = async (data: FormValues) => {
+    try {
+      await createTrip.mutateAsync({
+        data: {
+          customerName: data.customerName,
+          customerEmail: data.customerEmail,
+          customerPhone: data.customerPhone || null,
+          destination: data.destination,
+          startDate: new Date(data.startDate).toISOString(),
+          endDate: null,
+          participants: data.participants,
+          budget: data.budget ?? null,
+          requirements: data.requirements?.trim() || null,
+        },
+      });
+      toast({ title: t("customTrip.toast.title"), description: t("customTrip.toast.desc") });
+      reset();
+    } catch {
+      toast({
+        title: "Gagal mengirim",
+        description: "Periksa koneksi atau coba lagi nanti.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
     <PublicLayout>
+      <SEO 
+        title={t('customTrip.seo.title')}
+        description={t('customTrip.seo.description')}
+        keywords={t('customTrip.seo.keywords')}
+      />
       <div className="relative pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden bg-background">
         <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
@@ -51,20 +74,20 @@ export default function CustomTrip() {
             
             <div className="max-w-xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/20 text-secondary font-bold text-sm mb-6 border border-secondary/30">
-                <Compass className="w-4 h-4" /> Rancang Liburan Anda
+                <Compass className="w-4 h-4" /> {t('customTrip.hero.badge')}
               </div>
               <h1 className="text-4xl lg:text-5xl font-display font-bold leading-tight mb-6">
-                Liburan Impian,<br/>Sesuai Keinginan Anda.
+                {t('customTrip.hero.title')}
               </h1>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Punya destinasi impian tapi tidak menemukan paket yang pas? Beritahu kami rencana perjalanan Anda, dan tim expert kami akan merancang itinerary eksklusif khusus untuk Anda.
+                {t('customTrip.hero.desc')}
               </p>
               
               <div className="space-y-6">
                 {[
-                  { icon: MapPin, title: "Bebas Pilih Destinasi", desc: "Eksplorasi tempat anti-mainstream" },
-                  { icon: Calendar, title: "Waktu Fleksibel", desc: "Tentukan sendiri tanggal keberangkatan" },
-                  { icon: Wallet, title: "Sesuaikan Budget", desc: "Fasilitas sesuai anggaran Anda" }
+                  { icon: MapPin, title: t('customTrip.features.0.title'), desc: t('customTrip.features.0.desc') },
+                  { icon: Calendar, title: t('customTrip.features.1.title'), desc: t('customTrip.features.1.desc') },
+                  { icon: Wallet, title: t('customTrip.features.2.title'), desc: t('customTrip.features.2.desc') }
                 ].map((feature, i) => (
                   <div key={i} className="flex gap-4">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
@@ -135,10 +158,10 @@ export default function CustomTrip() {
 
                 <button 
                   type="submit" 
-                  disabled={isPending}
+                  disabled={createTrip.isPending}
                   className="w-full py-4 rounded-xl bg-primary text-white font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 disabled:opacity-50 disabled:cursor-not-allowed mt-4"
                 >
-                  {isPending ? "Mengirim..." : "Kirim Permintaan"}
+                  {createTrip.isPending ? "Mengirim..." : "Kirim Permintaan"}
                 </button>
               </form>
             </div>
@@ -149,3 +172,5 @@ export default function CustomTrip() {
     </PublicLayout>
   );
 }
+
+export default CustomTrip;

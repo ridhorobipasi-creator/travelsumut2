@@ -1,21 +1,25 @@
+export { Navbar };
 import { useState, useEffect } from "react";
 import { Link, useRoute } from "wouter";
-import { Menu, X, Compass, UserCircle } from "lucide-react";
+import { Menu, X, Compass, UserCircle, Heart } from "lucide-react";
+import { useWishlist } from "@/hooks/use-wishlist";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
-const NAV_LINKS = [
-  { name: "Beranda", href: "/" },
-  { name: "Paket Wisata", href: "/paket-wisata" },
-  { name: "Rental Mobil", href: "/rental-mobil" },
-  { name: "Galeri", href: "/galeri" },
-  { name: "Blog", href: "/blog" },
-  { name: "Custom Trip", href: "/custom-trip" },
+
+const NAV_LINK_KEYS = [
+  { key: "home", href: "/" },
+  { key: "packages", href: "/paket-wisata" },
+  { key: "vehicles", href: "/rental-mobil" },
+  { key: "gallery", href: "/galeri" },
+  { key: "blog", href: "/blog" },
+  { key: "custom_trip", href: "/custom-trip" },
 ];
-
-export function Navbar() {
+function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -37,10 +41,10 @@ export function Navbar() {
               <Compass className="w-6 h-6" />
             </div>
             <div className="flex flex-col">
-              <span className={cn("font-display font-bold text-2xl tracking-tight leading-none transition-colors", isScrolled ? "text-foreground" : "text-white lg:text-foreground")}>
+              <span className={cn("font-display font-bold text-2xl tracking-tight leading-none transition-colors", isScrolled ? "text-foreground" : "text-white lg:text-foreground")}> 
                 Wisata<span className="text-secondary">Sumut</span>
               </span>
-              <span className={cn("text-[10px] uppercase tracking-[0.2em] font-bold", isScrolled ? "text-muted-foreground" : "text-white/70 lg:text-muted-foreground")}>
+              <span className={cn("text-[10px] uppercase tracking-[0.2em] font-bold", isScrolled ? "text-muted-foreground" : "text-white/70 lg:text-muted-foreground")}> 
                 Sumatera Utara
               </span>
             </div>
@@ -48,31 +52,44 @@ export function Navbar() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
+            {NAV_LINK_KEYS.map((link) => (
               <NavLink key={link.href} href={link.href} isScrolled={isScrolled}>
-                {link.name}
+                {t(`navbar.${link.key}`)}
               </NavLink>
             ))}
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
-            <Link 
-              href="/admin" 
-              className={cn(
-                "flex items-center gap-2 px-6 py-2.5 rounded-full font-bold transition-all",
-                isScrolled 
-                  ? "bg-primary text-white hover:bg-primary/90 shadow-soft" 
-                  : "bg-white text-primary hover:bg-white/90 shadow-soft"
-              )}
+            {/* Wishlist Icon */}
+            {(() => {
+              const { wishlist } = useWishlist();
+              return (
+                <Link href="/wishlist" className="relative group" aria-label="Wishlist">
+                  <Heart className="w-6 h-6 text-secondary group-hover:scale-110 transition-transform" fill={wishlist.length > 0 ? "#f43f5e" : "none"} />
+                  {wishlist.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-secondary text-white text-xs font-bold rounded-full px-1.5 py-0.5 border-2 border-white shadow">{wishlist.length}</span>
+                  )}
+                </Link>
+              );
+            })()}
+            <button
+              onClick={() => i18n.changeLanguage(i18n.language === 'id' ? 'en' : 'id')}
+              className="px-3 py-1 rounded-lg border text-xs font-bold uppercase bg-muted hover:bg-primary/10 transition-colors"
+              aria-label="Ganti Bahasa"
             >
-              <UserCircle className="w-5 h-5" />
-              Admin
-            </Link>
+              {i18n.language === 'id' ? 'EN' : 'ID'}
+            </button>
+            {sessionStorage.getItem("isAdminAuthenticated") === "true" ? (
+              <Link href="/admin" className="bg-primary text-white px-5 py-2 rounded-xl text-sm font-bold shadow-soft hover:bg-primary/90 transition-all">
+                Panel Admin
+              </Link>
+            ) : null}
           </div>
 
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Tutup Menu" : "Buka Menu"}
             className={cn("lg:hidden p-2 rounded-lg transition-colors", isScrolled ? "text-foreground hover:bg-muted" : "text-white hover:bg-white/20")}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -90,36 +107,28 @@ export function Navbar() {
             className="absolute top-full left-0 w-full bg-white shadow-soft-lg border-t border-border lg:hidden overflow-hidden"
           >
             <div className="px-4 py-6 flex flex-col gap-2">
-              {NAV_LINKS.map((link) => (
+              {NAV_LINK_KEYS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className="text-lg font-bold text-foreground hover:text-primary transition-colors px-4 py-3 rounded-xl hover:bg-primary/5"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {link.name}
+                  {t(`navbar.${link.key}`)}
                 </Link>
               ))}
-              <div className="h-px bg-border my-4 mx-4" />
-              <Link
-                href="/admin"
-                className="flex items-center justify-center gap-2 text-lg font-bold text-white bg-primary px-4 py-4 rounded-xl mx-4"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <UserCircle className="w-5 h-5" />
-                Admin Dashboard
-              </Link>
+              {/* Mobile admin link removed per user request */}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
     </header>
   );
 }
 
 function NavLink({ href, children, isScrolled }: { href: string; children: React.ReactNode; isScrolled: boolean }) {
   const [isActive] = useRoute(href);
-  
   return (
     <Link
       href={href}
@@ -140,3 +149,5 @@ function NavLink({ href, children, isScrolled }: { href: string; children: React
     </Link>
   );
 }
+
+export default Navbar;

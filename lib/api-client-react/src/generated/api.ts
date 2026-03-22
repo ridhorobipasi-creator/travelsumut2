@@ -2758,6 +2758,93 @@ export const useCreateGalleryItem = <
 };
 
 /**
+ * @summary Update a gallery item
+ */
+export const getUpdateGalleryItemUrl = (id: number) => {
+  return `/api/gallery/${id}`;
+};
+
+export const updateGalleryItem = async (
+  id: number,
+  createGalleryItemInput: CreateGalleryItemInput,
+  options?: RequestInit,
+): Promise<GalleryItem> => {
+  return customFetch<GalleryItem>(getUpdateGalleryItemUrl(id), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createGalleryItemInput),
+  });
+};
+
+export const getUpdateGalleryItemMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateGalleryItem>>,
+    TError,
+    { id: number; data: BodyType<CreateGalleryItemInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateGalleryItem>>,
+  TError,
+  { id: number; data: BodyType<CreateGalleryItemInput> },
+  TContext
+> => {
+  const mutationKey = ["updateGalleryItem"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateGalleryItem>>,
+    { id: number; data: BodyType<CreateGalleryItemInput> }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return updateGalleryItem(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateGalleryItemMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateGalleryItem>>
+>;
+export type UpdateGalleryItemMutationBody = BodyType<CreateGalleryItemInput>;
+export type UpdateGalleryItemMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Update a gallery item
+ */
+export const useUpdateGalleryItem = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateGalleryItem>>,
+    TError,
+    { id: number; data: BodyType<CreateGalleryItemInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateGalleryItem>>,
+  TError,
+  { id: number; data: BodyType<CreateGalleryItemInput> },
+  TContext
+> => {
+  return useMutation(getUpdateGalleryItemMutationOptions(options));
+};
+
+/**
  * @summary Delete a gallery item
  */
 export const getDeleteGalleryItemUrl = (id: number) => {

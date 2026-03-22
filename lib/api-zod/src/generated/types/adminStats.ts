@@ -14,5 +14,7 @@ export interface AdminStats {
   totalPackages: number;
   totalVehicles: number;
   totalCustomTrips: number;
+  totalDestinations: number;
+  pendingTestimonials: number;
   recentBookings: Booking[];
 }

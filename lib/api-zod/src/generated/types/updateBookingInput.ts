@@ -9,4 +9,9 @@
 export interface UpdateBookingInput {
   status: string;
   notes?: string | null;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string | null;
+  /** ISO date string for trip start */
+  startDate?: string;
 }

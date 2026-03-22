@@ -12,4 +12,5 @@ export interface CreateTestimonialInput {
   rating: number;
   comment: string;
   packageId?: number | null;
+  isApproved?: boolean;
 }

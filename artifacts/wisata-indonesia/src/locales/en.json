@@ -1,0 +1,87 @@
+{
+  "home": {
+    "title": "Explore Indonesia",
+    "subtitle": "Find your next adventure!",
+    "search_placeholder": "Search destinations, packages, or vehicles...",
+    "popular_destinations": "Popular Destinations",
+    "see_all": "See All",
+    "featured_packages": "Featured Packages",
+    "testimonials": "Testimonials",
+    "gallery": "Gallery",
+    "blog": "Blog & Tips"
+  },
+  "navbar": {
+    "home": "Home",
+    "packages": "Packages",
+    "vehicles": "Vehicles",
+    "gallery": "Gallery",
+    "blog": "Blog",
+    "custom_trip": "Custom Trip",
+    "wishlist": "Wishlist",
+    "language": "Language"
+  },
+  "footer": {
+    "about": "About Us",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "© 2026 Travel Indonesia. All rights reserved."
+  },
+  "packages": {
+    "title": "Travel Packages",
+    "search_placeholder": "Search packages...",
+    "no_packages": "No packages found.",
+    "book_now": "Book Now",
+    "details": "Details"
+  },
+  "package_detail": {
+    "itinerary": "Itinerary",
+    "facilities": "Facilities",
+    "price": "Price",
+    "book": "Book Package",
+    "add_to_wishlist": "Add to Wishlist",
+    "remove_from_wishlist": "Remove from Wishlist",
+    "reviews": "Reviews",
+    "write_review": "Write a Review"
+  },
+  "vehicles": {
+    "title": "Vehicles",
+    "search_placeholder": "Search vehicles...",
+    "no_vehicles": "No vehicles found.",
+    "book_now": "Book Now"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "no_images": "No images found."
+  },
+  "blog": {
+    "title": "Blog & Tips",
+    "no_posts": "No blog posts found.",
+    "read_more": "Read More"
+  },
+  "custom_trip": {
+    "title": "Custom Trip Request",
+    "description": "Tell us your dream trip and we’ll make it happen!",
+    "submit": "Submit Request"
+  },
+  "wishlist": {
+    "title": "Your Wishlist",
+    "empty": "Your wishlist is empty."
+  },
+  "not_found": {
+    "title": "Page Not Found",
+    "description": "Sorry, the page you are looking for does not exist."
+  },
+  "review": {
+    "title": "Reviews",
+    "add_review": "Add Review",
+    "your_review": "Your Review",
+    "no_reviews": "No reviews yet.",
+    "submit": "Submit"
+  },
+  "toast": {
+    "added_to_wishlist": "Added to wishlist!",
+    "removed_from_wishlist": "Removed from wishlist!",
+    "review_submitted": "Review submitted!"
+  }
+}

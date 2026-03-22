@@ -171,6 +171,11 @@ export interface CreateBookingInput {
 export interface UpdateBookingInput {
   status: string;
   notes?: string | null;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string | null;
+  /** ISO date string for trip start */
+  startDate?: string;
 }
 
 export interface GalleryItem {
@@ -233,11 +238,16 @@ export interface CreateTestimonialInput {
   rating: number;
   comment: string;
   packageId?: number | null;
+  isApproved?: boolean;
 }
 
 export interface UpdateTestimonialInput {
-  isApproved: boolean;
-  comment?: string | null;
+  customerName?: string;
+  customerAvatar?: string | null;
+  rating?: number;
+  comment?: string;
+  packageId?: number | null;
+  isApproved?: boolean;
 }
 
 export interface Banner {

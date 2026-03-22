@@ -1,7 +1,9 @@
 import { Link } from "wouter";
 import { Compass, Mail, Phone, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className="bg-foreground text-white pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,40 +23,38 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-white/70 leading-relaxed font-light">
-              Platform pariwisata terpercaya untuk menjelajahi pesona alam dan keunikan budaya Sumatera Utara. Jadikan perjalanan Anda tak terlupakan bersama kami.
+              {t('footer.desc')}
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all hover:scale-110">
+              <a href="#" aria-label="Facebook" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all hover:scale-110">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all hover:scale-110">
+              <a href="#" aria-label="Instagram" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all hover:scale-110">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all hover:scale-110">
+              <a href="#" aria-label="Twitter" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all hover:scale-110">
                 <Twitter className="w-5 h-5" />
               </a>
             </div>
           </div>
           
           <div>
-            <h3 className="font-display font-bold text-xl mb-8">Tautan Cepat</h3>
+            <h3 className="font-display font-bold text-xl mb-8">{t('footer.quickLinks.title')}</h3>
             <ul className="space-y-4">
-              <li><Link href="/paket-wisata" className="text-white/70 hover:text-secondary font-medium transition-colors">Paket Wisata</Link></li>
-              <li><Link href="/rental-mobil" className="text-white/70 hover:text-secondary font-medium transition-colors">Rental Mobil</Link></li>
-              <li><Link href="/galeri" className="text-white/70 hover:text-secondary font-medium transition-colors">Galeri Destinasi</Link></li>
-              <li><Link href="/blog" className="text-white/70 hover:text-secondary font-medium transition-colors">Blog & Artikel</Link></li>
-              <li><Link href="/custom-trip" className="text-white/70 hover:text-secondary font-medium transition-colors">Custom Trip</Link></li>
+              <li><Link href="/paket-wisata" className="text-white/70 hover:text-secondary font-medium transition-colors">{t('footer.quickLinks.packages')}</Link></li>
+              <li><Link href="/rental-mobil" className="text-white/70 hover:text-secondary font-medium transition-colors">{t('footer.quickLinks.vehicles')}</Link></li>
+              <li><Link href="/galeri" className="text-white/70 hover:text-secondary font-medium transition-colors">{t('footer.quickLinks.gallery')}</Link></li>
+              <li><Link href="/blog" className="text-white/70 hover:text-secondary font-medium transition-colors">{t('footer.quickLinks.blog')}</Link></li>
+              <li><Link href="/custom-trip" className="text-white/70 hover:text-secondary font-medium transition-colors">{t('footer.quickLinks.customTrip')}</Link></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="font-display font-bold text-xl mb-8">Destinasi Populer</h3>
+            <h3 className="font-display font-bold text-xl mb-8">{t('footer.popularDest.title')}</h3>
             <ul className="space-y-4">
-              <li><a href="#" className="text-white/70 hover:text-secondary font-medium transition-colors">Danau Toba</a></li>
-              <li><a href="#" className="text-white/70 hover:text-secondary font-medium transition-colors">Berastagi</a></li>
-              <li><a href="#" className="text-white/70 hover:text-secondary font-medium transition-colors">Bukit Lawang</a></li>
-              <li><a href="#" className="text-white/70 hover:text-secondary font-medium transition-colors">Pulau Nias</a></li>
-              <li><a href="#" className="text-white/70 hover:text-secondary font-medium transition-colors">Samosir</a></li>
+              {t('footer.popularDest.list', { returnObjects: true }).map((dest: string) => (
+                <li key={dest}><a href="#" className="text-white/70 hover:text-secondary font-medium transition-colors">{dest}</a></li>
+              ))}
             </ul>
           </div>
           
