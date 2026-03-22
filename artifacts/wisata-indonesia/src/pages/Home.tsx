@@ -33,8 +33,8 @@ export default function Home() {
     }
   };
 
-  const displayPackages = featuredPackages && featuredPackages.length > 0 ? featuredPackages : MOCK_PACKAGES.filter(p => p.featured);
-  const displayTestimonials = testimonials && testimonials.length > 0 ? testimonials : MOCK_TESTIMONIALS;
+  const displayPackages = Array.isArray(featuredPackages) && featuredPackages.length > 0 ? featuredPackages : MOCK_PACKAGES.filter(p => p.featured);
+  const displayTestimonials = Array.isArray(testimonials) && testimonials.length > 0 ? testimonials : MOCK_TESTIMONIALS;
 
   return (
     <PublicLayout>
