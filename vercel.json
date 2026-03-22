@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm --filter @workspace/wisata-indonesia run build",
+  "outputDirectory": "artifacts/wisata-indonesia/dist/public",
+  "installCommand": "pnpm install"
+}
